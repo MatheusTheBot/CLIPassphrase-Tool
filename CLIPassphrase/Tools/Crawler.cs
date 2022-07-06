@@ -68,23 +68,21 @@ public class Crawler
             }
 
 
-            // Sample: "...<title> Random word -..."
+            // Sample: "...<title> WORD - Definition and synonyms of..."
 
-            foreach(var i in Doc)
+            foreach (var i in Doc)
             {
-                int IndexStart = i.ParsedText.IndexOf("<title>");
-                int IndexEnd = i.ParsedText.IndexOf(" - ");
+                HtmlNode Node = i.DocumentNode.SelectSingleNode("//head/title");
+                string Word = Node.WriteTo();
 
-                string Word = i.ParsedText.Substring(IndexStart, IndexEnd);
-                Word = Word.Substring(Word.IndexOf(">"), Word.IndexOf("-"));
+                int EndIndex = Word.IndexOf(" - ");
 
-                Word = Word.Remove(Word.IndexOf("-"));
-                Word = Word.Remove(Word.IndexOf(">"), 1);
-
-                Word = Word.Trim();
+                Word = Word.Substring(0, EndIndex);
+                Word = Word.Replace("<title>", " ").Replace(".", " ").Trim().ToLower();
+                
                 if (Word.Length == Length)
                 {
-                    if (!Word.Contains(' '))
+                    //if (!Word.Contains(' '))
                         return new ResponseModel(true, Word);
                 }
             }
