@@ -1,5 +1,6 @@
 ﻿using CLIPassphrase.Enums;
 using CLIPassphrase.Models;
+using System.Diagnostics;
 
 namespace CLIPassphrase.Tools;
 public static class Printer
@@ -81,6 +82,13 @@ public static class Printer
 
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine($"The entropy for the phrase {response} is: {entropy} {Environment.NewLine}");
+        Console.ForegroundColor = ConsoleColor.White;
+    }
+
+    public static void StopWatch(Stopwatch timer)
+    {
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine($"Execution time: {timer.Elapsed} {Environment.NewLine}");
         Console.ForegroundColor = ConsoleColor.White;
     }
 }
