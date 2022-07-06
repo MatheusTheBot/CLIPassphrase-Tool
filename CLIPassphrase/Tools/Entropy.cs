@@ -69,6 +69,6 @@ public class Entropy
             frequency = (double)item.Value / input.Length;
             result -= frequency * (Math.Log(frequency) / Math.Log(2));
         }
-        return result;
+        return Math.Abs(result);
     }
 }
