@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CLIPassphrase.Tools;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Parsing;
+using System.Diagnostics;
 
 namespace CLIPassphrase;
 public class Program
@@ -16,9 +18,14 @@ public class Program
 
         var rootCommand = new RootCommand();
 
+        var timer = new Stopwatch();
+        timer.Start();
+
         BuildCommandOptions(rootCommand, app);
         rootCommand.Invoke(args);
 
+        timer.Stop();
+        Printer.StopWatch(timer);        
     }
 
 
