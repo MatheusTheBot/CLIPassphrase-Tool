@@ -47,29 +47,46 @@ public class Crawler
         }
 
 
+        Task<HtmlDocument>[] Loads = new Task<HtmlDocument>[10];
+        HtmlDocument[] Doc = new HtmlDocument[10];
+        HtmlWeb Site = new();
+
         while (true)
         {
-            HtmlDocument Doc;
-            HtmlWeb Site = new();
+            for (int i = 0; i < Loads.Length; i++)
+            {
+                var c = Loads[i];
+                c = Site.LoadFromWebAsync($"https://educalingo.com/{Language}/dic-{Language}/random-word");
+                Loads[i] = c;
+            }
+            Task.WaitAll(Loads);
 
-            Doc = Site.Load($"https://educalingo.com/{Language}/dic-{Language}/random-word");
+            for (int i = 0; i < Loads.Length; i++)
+            {
+                var d = Loads[i];
+                Doc[i] = d.Result;
+            }
+
 
             // Sample: "...<title> Random word -..."
 
-            int IndexStart = Doc.ParsedText.IndexOf("<title>");
-            int IndexEnd = Doc.ParsedText.IndexOf(" - ");
-
-            string Word = Doc.ParsedText.Substring(IndexStart, IndexEnd);
-            Word = Word.Substring(Word.IndexOf(">"), Word.IndexOf("-"));
-
-            Word = Word.Remove(Word.IndexOf("-"));
-            Word = Word.Remove(Word.IndexOf(">"), 1);
-
-            Word = Word.Trim();
-            if (Word.Length == Length)
+            foreach(var i in Doc)
             {
-                //if (!Word.Contains(' '))
-                return new ResponseModel(true, Word);
+                int IndexStart = i.ParsedText.IndexOf("<title>");
+                int IndexEnd = i.ParsedText.IndexOf(" - ");
+
+                string Word = i.ParsedText.Substring(IndexStart, IndexEnd);
+                Word = Word.Substring(Word.IndexOf(">"), Word.IndexOf("-"));
+
+                Word = Word.Remove(Word.IndexOf("-"));
+                Word = Word.Remove(Word.IndexOf(">"), 1);
+
+                Word = Word.Trim();
+                if (Word.Length == Length)
+                {
+                    if (!Word.Contains(' '))
+                        return new ResponseModel(true, Word);
+                }
             }
         }
     }
