@@ -42,9 +42,13 @@ public class Entropy
         foreach (var item in input)
         {
             if (output == "")
+            {
                 output = item.ToString();
+            }
             else
+            {
                 output = $"{output}-{item}";
+            }
         }
 
         foreach (char c in output)

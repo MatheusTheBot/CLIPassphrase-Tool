@@ -79,11 +79,11 @@ public class Crawler
 
                 Word = Word.Substring(0, EndIndex);
                 Word = Word.Replace("<title>", " ").Replace(".", " ").Trim().ToLower();
-                
+
                 if (Word.Length == Length)
                 {
                     //if (!Word.Contains(' '))
-                        return new ResponseModel(true, Word);
+                    return new ResponseModel(true, Word);
                 }
             }
         }

@@ -75,9 +75,13 @@ public static class Printer
         foreach (var item in password)
         {
             if (response == "")
+            {
                 response = item.ToString();
+            }
             else
+            {
                 response = $"{response}-{item}";
+            }
         }
 
         Console.ForegroundColor = ConsoleColor.DarkYellow;
