@@ -5,6 +5,7 @@ using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Parsing;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace CLIPassphrase;
 public class Program
@@ -25,13 +26,13 @@ public class Program
         rootCommand.Invoke(args);
 
         timer.Stop();
-        Printer.StopWatch(timer);        
+        Printer.StopWatch(timer);
     }
 
 
     static IConfigurationRoot BuildConfig(IConfigurationBuilder builder, MyConfiguration configs)
     {
-        builder.SetBasePath(Directory.GetCurrentDirectory())
+        builder.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddEnvironmentVariables();
 
